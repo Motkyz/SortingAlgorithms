@@ -12,34 +12,31 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Button x:Name="ToStart" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" Background="{x:Null}" Margin="5,0,0,0" 
-        Width="25" Height="25">
+        Width="25" Height="25" Click="ToStart_Click">
             &#10094;
             <Button.ToolTip>Вернуться в начало</Button.ToolTip>
         </Button>
 
         <Grid Margin="5" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="5">
+            <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1" Margin="5">
                 <ScrollViewer>
                     <TextBlock x:Name="logTxt" TextWrapping="Wrap"/>
                 </ScrollViewer>
             </Border>
 
             <Grid Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -47,14 +44,17 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <ComboBox x:Name="Sorts" Width="150" Margin="5,0,5,0">
-                            <ComboBoxItem Content="Select Sort"/>
-                            <ComboBoxItem Content="Bubble Sort"/>
-                            <ComboBoxItem Content="Quick Sort"/>
-                            <ComboBoxItem Content="Heap Sort"/>
+                        <ComboBox x:Name="Sorts" Width="150" Margin="5,0,5,0" SelectedIndex="0">
+                            <ComboBoxItem Content="Прямое слияние"/>
+                            <ComboBoxItem Content="Естественное слияние"/>
+                            <ComboBoxItem Content="Многопутевое слияние"/>
                         </ComboBox>
 
-                        <Button x:Name="cansel" Content="Отмена" Margin="5,0,5,0"/>
+                        <ComboBox x:Name="Attributes" Width="150" Margin="5,0,5,0">
+
+                        </ComboBox>
+
+                        <Button x:Name="cansel" Content="Отмена" Margin="5,0,5,0" Click="cansel_Click"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" VerticalAlignment="Center">
@@ -74,22 +74,14 @@
                         </Grid>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button x:Name="DrawBtn" Content="Создать массив" Margin="5,0,5,0"/>
-                        <Button x:Name="SortBtn" Content="Отсортировать" Margin="5,0,5,0"/>
-                    </StackPanel>
-                </Grid>
-
-                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-                    <ScrollViewer>
-                        <TextBlock x:Name="description" TextWrapping="Wrap"/>
-                    </ScrollViewer>
-                </Border>
-
+                <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="SelectFileBtn" Content="Выбрать файл" Margin="5,0,5,0" Click="SelectFileBtn_Click"/>
+                    <Button x:Name="SortBtn" Content="Отсортировать" Margin="5,0,5,0" Click="SortBtn_Click"/>
+                </StackPanel>
             </Grid>
+
+            <DataGrid Name="DataListView" Grid.Row="1" Grid.Column="0" Margin="5">
+            </DataGrid>
         </Grid>
-
-        <Canvas x:Name="canvas" Grid.Row="2" Background="White" Margin="5"/>
-
     </Grid>
 </Page>

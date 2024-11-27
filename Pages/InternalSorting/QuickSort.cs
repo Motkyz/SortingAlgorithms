@@ -36,11 +36,11 @@ namespace SortingAlgorithms.Pages
 
         private async Task<int> Partition(int left, int right)
         {
-            await UpdateComments($"Выбираем элемент №{right + 1} как опорный");
+            await UpdateLog($"Выбираем элемент №{right + 1} как опорный");
             Rectangle partition = rectangles[right];
             partition.Fill = Brushes.Red;
 
-            await UpdateComments($"Сортировка происходит в области от элемента №{left + 1} до №{right + 1}");
+            await UpdateLog($"Сортировка происходит в области от элемента №{left + 1} до №{right + 1}");
             for (int i = left * 2; i <= right * 2; i++)
             {
                 background[i].Fill = Brushes.LightGray;

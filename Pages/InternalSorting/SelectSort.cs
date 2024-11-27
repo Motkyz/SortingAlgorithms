@@ -17,7 +17,7 @@ namespace SortingAlgorithms.Pages
             {
                 //поиск минимального элемента
                 int indOfMin = i;
-                await UpdateComments($"Ищем минимальный неотсортированный элемент");
+                await UpdateLog($"Ищем минимальный неотсортированный элемент");
                 for (int j = i + 1; j < rectangles.Count; j++)
                 {
                     _cancellationTokenSource!.Token.ThrowIfCancellationRequested();
@@ -34,9 +34,9 @@ namespace SortingAlgorithms.Pages
                     }
                 }
 
-                if (commentaries.Count > 0)
+                if (logs.Count > 0)
                 {
-                    commentaries[commentaries.Count - 1] += $" => №{indOfMin + 1}";
+                    logs[logs.Count - 1] += $" => №{indOfMin + 1}";
                 }
                 //обмен элементов
                 await Swap(indOfMin, i);

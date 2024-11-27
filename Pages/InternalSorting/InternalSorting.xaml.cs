@@ -22,7 +22,7 @@ namespace SortingAlgorithms.Pages
 
         List<Rectangle> rectangles = new List<Rectangle>();
         List<Rectangle> originals = new List<Rectangle>();
-        List<string> commentaries = new List<string>();
+        List<string> logs = new List<string>();
         public InternalSorting()
         {
             InitializeComponent();
@@ -64,8 +64,6 @@ namespace SortingAlgorithms.Pages
                 Canvas.SetBottom(rect, 0);
                 Canvas.SetLeft(rect, i * canvas.ActualWidth / 20);
             }
-
-
         }
 
         private void Draw_Click(object sender, RoutedEventArgs e)
@@ -75,14 +73,14 @@ namespace SortingAlgorithms.Pages
             originals.Clear();
             background.Clear();
             logTxt.Text = "";
-            commentaries.Clear();
+            logs.Clear();
             DrawRects();
         }
 
         private async void Sort_Click(object sender, RoutedEventArgs e)
         {
             logTxt.Text = "";
-            commentaries.Clear();
+            logs.Clear();
 
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -126,11 +124,11 @@ namespace SortingAlgorithms.Pages
 
             if (firstRect != secondRect)
             {
-                await UpdateComments($"Меняем местами элементы №{secondRect + 1} и №{firstRect + 1}");
+                await UpdateLog($"Меняем местами элементы №{secondRect + 1} и №{firstRect + 1}");
             }
             else
             {
-                await UpdateComments($"Элемент №{secondRect + 1} на своём месте");
+                await UpdateLog($"Элемент №{secondRect + 1} на своём месте");
             }
 
             rectangles[firstRect].Fill = swapping;
@@ -158,10 +156,10 @@ namespace SortingAlgorithms.Pages
             return Task.CompletedTask;
         }
 
-        private Task UpdateComments(string comment)
+        private Task UpdateLog(string comment)
         {
-            commentaries.Add($"{commentaries.Count + 1}) {comment}");
-            logTxt.Text = string.Join("\n", commentaries);
+            logs.Add($"{logs.Count + 1}) {comment}");
+            logTxt.Text = string.Join("\n", logs);
             return Task.CompletedTask;
         }
 
@@ -174,7 +172,7 @@ namespace SortingAlgorithms.Pages
         {
             canvas.Children.Clear();
             logTxt.Text = "";
-            commentaries.Clear();
+            logs.Clear();
 
             for (int i = 0; i < originals.Count; i++)
             {
