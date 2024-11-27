@@ -13,7 +13,6 @@ namespace SortingAlgorithms.Pages
     {
         private async Task NaturalOuterSort(string attribute)
         {
-            bool isNumeric = long.TryParse(table.First()[attribute], out _);
             List<List<Dictionary<string, string>>> chunks = new List<List<Dictionary<string, string>>>();
             List<Dictionary<string, string>> currentChunk = new List<Dictionary<string, string>>();
 
@@ -53,7 +52,7 @@ namespace SortingAlgorithms.Pages
             {
                 _cancellationTokenSource!.Token.ThrowIfCancellationRequested();
 
-                chunks = await MultiWayMerge(chunks, attribute, isNumeric);
+                chunks = await MultiThreadMerge(chunks, attribute);
             }
 
             table = chunks.First();

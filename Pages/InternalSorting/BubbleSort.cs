@@ -17,7 +17,8 @@ namespace SortingAlgorithms.Pages
             {
                 for (int j = 0; j < rectangles.Count - 1 - i; j++)
                 {
-                    await UpdateLog($"Сравниваем элементы №{j + 1} и №{j + 2}, если №{j + 1} больше, чем №{j + 2}, то меняем местами");
+                    await UpdateLog($"Сравниваем элементы №{j + 1} и №{j + 2}, " +
+                        $"если №{j + 1} больше, чем №{j + 2}, то меняем местами");
                     rectangles[j].Fill = Brushes.DeepPink;
                     rectangles[j + 1].Fill = Brushes.DeepPink;
                     await Task.Delay((int)DelaySlider.Value);

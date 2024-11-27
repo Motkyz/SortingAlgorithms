@@ -32,7 +32,7 @@
 
             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1" Margin="5">
                 <ScrollViewer>
-                    <TextBlock x:Name="logTxt" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="logTxt" TextWrapping="Wrap" FontSize="14" Padding="10"/>
                 </ScrollViewer>
             </Border>
 
@@ -65,12 +65,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" FontSize="16" Text="Задержка:" Margin="10,0,5,0" VerticalAlignment="Center"/>
-
-                            <Slider x:Name="DelaySlider" Grid.Column="1" Minimum="100" Maximum="2000" Value="500"
-                                TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
-
-                            <TextBlock Grid.Column="2" FontSize="16" Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='{}{0} ms'}" Margin="10,0,10,0" VerticalAlignment="Center"/>
+                            
                         </Grid>
                     </StackPanel>
 

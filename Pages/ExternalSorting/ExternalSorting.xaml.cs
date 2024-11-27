@@ -19,13 +19,13 @@ namespace SortingAlgorithms.Pages
 
         private List<Dictionary<string, string>> table = new List<Dictionary<string, string>>();
         private string inputFilePath;
-        private string outputFilePath = "../../../Files/output.csv";
+        private string outputFilePath = "../../../Files/Output.csv";
         public ExternalSorting()
         {
             InitializeComponent();
         }
 
-        string CSVDataBase = "../../../Files/output.csv";
+        string CSVDataBase = "../../../Files/Output.csv";
         ICollection CreateDataSource()
         {
             string text = File.ReadAllText(CSVDataBase);
@@ -80,11 +80,11 @@ namespace SortingAlgorithms.Pages
             {
                 string selectedAttribute = Attributes.SelectedItem.ToString()!;
                 string selectedSort = ((ComboBoxItem)Sorts.SelectedItem).Content.ToString()!;
-
+                
                 switch (selectedSort)
                 {
                     case "Прямое слияние":
-                        await DirectOuterSort(selectedAttribute);
+                        await DirectOuterSort(selectedAttribute);        
                         break;
                     case "Естественное слияние":
                         await NaturalOuterSort(selectedAttribute);
@@ -96,6 +96,7 @@ namespace SortingAlgorithms.Pages
                         MessageBox.Show("Выберите метод слияния.");
                         break;
                 }
+                logTxt.Text = Description.GetDesc(selectedSort);
 
                 SaveDataToFile();
 

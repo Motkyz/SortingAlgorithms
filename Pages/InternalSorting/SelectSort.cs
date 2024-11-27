@@ -15,7 +15,6 @@ namespace SortingAlgorithms.Pages
         {
             for (int i = 0; i < rectangles.Count - 1; i++)
             {
-                //поиск минимального элемента
                 int indOfMin = i;
                 await UpdateLog($"Ищем минимальный неотсортированный элемент");
                 for (int j = i + 1; j < rectangles.Count; j++)
@@ -38,7 +37,7 @@ namespace SortingAlgorithms.Pages
                 {
                     logs[logs.Count - 1] += $" => №{indOfMin + 1}";
                 }
-                //обмен элементов
+                
                 await Swap(indOfMin, i);
                 rectangles[i].Fill = final;
             }

@@ -16,10 +16,9 @@ namespace SortingAlgorithms.Pages
             await NaturalOuterSort(attribute);
         }
 
-        private async Task<List<List<Dictionary<string, string>>>> MultiWayMerge(List<List<Dictionary<string, string>>> chunk, string attribute, bool isNumeric)
+        private async Task<List<List<Dictionary<string, string>>>> MultiThreadMerge(List<List<Dictionary<string, string>>> chunk, string attribute)
         {
-            var priorityQueue = new SortedDictionary<
-                (string, int), Dictionary<string, string>>(new ComparerForMerge());
+            var priorityQueue = new SortedDictionary<(string, int), Dictionary<string, string>>(new ComparerForMerge());
 
             var indixes = new int[chunk.Count];
 

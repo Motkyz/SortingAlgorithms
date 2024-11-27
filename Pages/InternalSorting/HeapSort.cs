@@ -47,10 +47,9 @@ namespace SortingAlgorithms.Pages
             await UpdateLog($"Выбираем корнем элемент №{i + 1}, его же считаем наибольшим элементом");
             int largest = i;
             rectangles[largest].Fill = Brushes.Purple;
-            // Инициализируем наибольший элемент как корень
 
-            int left = 2 * i + 1; // left = 2*i + 1
-            int right = 2 * i + 2; // right = 2*i + 2
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
            
             await Task.Delay((int)DelaySlider.Value);
 
