@@ -26,13 +26,13 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.35*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1" Margin="5">
                 <ScrollViewer>
-                    <TextBlock x:Name="logTxt" TextWrapping="Wrap" FontSize="14" Padding="10"/>
+                    <TextBlock x:Name="logTxt" TextWrapping="Wrap" Padding="10"/>
                 </ScrollViewer>
             </Border>
 
@@ -44,17 +44,17 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <ComboBox x:Name="Sorts" Width="150" Margin="5,0,5,0" SelectedIndex="0">
+                        <ComboBox x:Name="Sorts" Width="160" Margin="5,0,5,0" SelectionChanged="Sorts_SelectionChanged">
                             <ComboBoxItem Content="Прямое слияние"/>
                             <ComboBoxItem Content="Естественное слияние"/>
                             <ComboBoxItem Content="Многопутевое слияние"/>
                         </ComboBox>
 
-                        <ComboBox x:Name="Attributes" Width="150" Margin="5,0,5,0">
+                    <ComboBox x:Name="Attributes" Width="140" Margin="5,0,5,0"/>
 
-                        </ComboBox>
 
-                        <Button x:Name="cansel" Content="Отмена" Margin="5,0,5,0" Click="cansel_Click"/>
+
+                    
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" VerticalAlignment="Center">
@@ -65,18 +65,34 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            
-                        </Grid>
+                        <TextBlock Grid.Column="0" FontSize="16" Text="Задержка:" Margin="10,0,5,0" VerticalAlignment="Center"/>
+                        <Slider x:Name="DelaySlider" Grid.Column="1" Minimum="100" Maximum="2000" Value="500"
+                            TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" FontSize="16" Text="{Binding ElementName=DelaySlider, Path=Value, StringFormat='{}{0} ms'}" Margin="10,0,10,0" VerticalAlignment="Center"/>
+
+                    </Grid>
                     </StackPanel>
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button x:Name="SelectFileBtn" Content="Выбрать файл" Margin="5,0,5,0" Click="SelectFileBtn_Click"/>
                     <Button x:Name="SortBtn" Content="Отсортировать" Margin="5,0,5,0" Click="SortBtn_Click"/>
+                    <Button x:Name="cansel" Content="Отмена" Margin="5,0,5,0" Click="cansel_Click"/>
                 </StackPanel>
             </Grid>
 
-            <DataGrid Name="DataListView" Grid.Row="1" Grid.Column="0" Margin="5">
-            </DataGrid>
+            <Grid Grid.Column="0" Grid.Row="1" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" FontSize="16" Text="Описание" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="5">
+                    <ScrollViewer>
+                        <TextBlock x:Name="descTxt" TextWrapping="Wrap" Padding="10"/>
+                    </ScrollViewer>
+                </Border>
+                </Grid>
         </Grid>
     </Grid>
 </Page>

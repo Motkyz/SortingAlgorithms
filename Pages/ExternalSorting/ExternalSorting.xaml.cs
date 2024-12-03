@@ -16,75 +16,35 @@ namespace SortingAlgorithms.Pages
     public partial class ExternalSorting : Page
     {
         CancellationTokenSource? _cancellationTokenSource;
+        List<string> logs = new List<string>();
 
-        private List<Dictionary<string, string>> table = new List<Dictionary<string, string>>();
         private string inputFilePath;
-        private string outputFilePath = "../../../Files/Output.csv";
+        public string outputFilePath = "output.csv";
+
+        private string? _headers;
+        private int _keyInd;
+        private string _attribute;
+        private long _sizeOfBlocks, _segments;
+
         public ExternalSorting()
         {
             InitializeComponent();
         }
 
-        string CSVDataBase = "../../../Files/Output.csv";
-        ICollection CreateDataSource()
-        {
-            string text = File.ReadAllText(CSVDataBase);
-            string[] lines = text.Split("\r\n");
-
-            //Create new DataTables and Rows
-            DataTable dt = new DataTable();
-            DataRow dr;
-
-            for (int i = 0; i < lines[0].Split(',').Length;i++)
-            {
-                dt.Columns.Add(new DataColumn(lines[0].Split(',')[i], typeof(string)));
-            }
-
-            //For each line in the File
-            for (int i = 1; i<lines.Length;i++)
-            {
-                //Create new Row
-                dr = dt.NewRow();
-                //Split lines at delimiter ';''
-                for (int j = 0; j < lines[i].Split(',').Length; j++)
-                {
-                    dr[j] = lines[i].Split(',')[j];
-                }
-
-                //Add the row we created
-                dt.Rows.Add(dr);
-            }
-
-            //Return Dataview 
-            DataView dv = new DataView(dt);
-            return dv;
-        }
-
-        public void LoadCsvToListView()
-        {            
-            try
-            {
-                DataListView.ItemsSource = CreateDataSource();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка при чтении файла: " + ex.Message);
-            }
-        }
-
         private async void SortBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             _cancellationTokenSource = new CancellationTokenSource();
-
+            logs.Clear();
+            logTxt.Text = "";
             try
             {
-                string selectedAttribute = Attributes.SelectedItem.ToString()!;
-                string selectedSort = ((ComboBoxItem)Sorts.SelectedItem).Content.ToString()!;
-                
+                string selectedSort = Sorts.Text;
+                int selectedAttribute = Attributes.SelectedIndex;
+                _attribute = Attributes.Text;
                 switch (selectedSort)
                 {
                     case "Прямое слияние":
-                        await DirectOuterSort(selectedAttribute);        
+                        await DirectOuterSort(selectedAttribute);
                         break;
                     case "Естественное слияние":
                         await NaturalOuterSort(selectedAttribute);
@@ -96,51 +56,9 @@ namespace SortingAlgorithms.Pages
                         MessageBox.Show("Выберите метод слияния.");
                         break;
                 }
-                logTxt.Text = Description.GetDesc(selectedSort);
-
-                SaveDataToFile();
-
-                LoadCsvToListView();
             }
-            catch (OperationCanceledException) { }
+            catch (OperationCanceledException) { }          
             catch { MessageBox.Show("Выберите файл"); }
-
-        }
-        private void LoadDataFromFile()
-        {
-            if (!File.Exists(inputFilePath)) return;
-
-            table.Clear();
-            var lines = File.ReadAllLines(inputFilePath);
-            if (lines.Length == 0) return;
-
-            var headers = lines[0].Split(',');
-            foreach (var line in lines.Skip(1))
-            {
-                var values = line.Split(',');
-                var record = new Dictionary<string, string>();
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    record[headers[i]] = values[i];
-                }
-                table.Add(record);
-            }
-
-            Attributes.ItemsSource = headers;
-            Attributes.SelectedIndex = 0;
-        }
-
-        private void SaveDataToFile()
-        {
-            var headers = table.First().Keys.ToArray();
-            var lines = new List<string> { string.Join(",", headers) };
-
-            foreach (var record in table)
-            {
-                lines.Add(string.Join(",", record.Values));
-            }
-
-            File.WriteAllLines(outputFilePath, lines);
         }
 
         private void SelectFileBtn_Click(object sender, RoutedEventArgs e)
@@ -166,6 +84,61 @@ namespace SortingAlgorithms.Pages
         {
             _cancellationTokenSource?.Cancel();
             _ = NavigationService.Navigate(new Uri("/Pages/Start.xaml", UriKind.Relative));
+        }
+
+        private void LoadDataFromFile()
+        {
+            if (!File.Exists(inputFilePath)) return;
+
+            var lines = File.ReadAllLines(inputFilePath);
+            if (lines.Length == 0) return;
+            var output = new StreamWriter(outputFilePath);
+            foreach (var line in lines)
+            {
+                output.WriteLine(line);
+            }
+            output.Close();
+
+            var headers = lines[0];
+
+            Attributes.ItemsSource = headers.Split(',');
+            Attributes.SelectedIndex = 0;
+        }
+
+        public int CompareElements(string firstEl, string secondEl) //-1, если первое меньше второго, 0, если равны, 1, если первое больше второго
+        {
+            string firstElDouble = firstEl.Replace('.', ',');
+            if (double.TryParse(firstElDouble, out double firstRes))
+            {
+                string secondElDouble = secondEl.Replace('.', ',');
+                double secondRes = double.Parse(secondElDouble);
+                if (firstRes < secondRes) return -1;
+                if (firstRes > secondRes) return 1;
+                return 0;
+            }
+            else return firstEl.CompareTo(secondEl);
+        }
+
+        public async Task UpdateLog(string comment)
+        {
+            await Task.Run(async () =>
+                await Log(comment));
+        }
+
+        private void Sorts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedSort = ((ComboBoxItem)Sorts.SelectedItem).Content.ToString()!;
+            descTxt.Text = Description.GetDesc(selectedSort);
+        }
+
+        private Task Log(string comment)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                logs.Add($"{comment}");
+                logTxt.Text = string.Join("\n", logs);
+            });
+            return Task.CompletedTask;
         }
     }
 }
